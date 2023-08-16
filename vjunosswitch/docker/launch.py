@@ -6,18 +6,12 @@ import os
 import re
 import signal
 import sys
-<<<<<<< HEAD
-
-import vrnetlab
-
-=======
 import uuid
 
 import vrnetlab
 
 STARTUP_CONFIG_FILE = "/config/startup-config.cfg"
 
->>>>>>> more patches
 def handle_SIGCHLD(signal, frame):
     os.waitpid(-1, os.WNOHANG)
 
@@ -43,8 +37,7 @@ class VJUNOSSWITCH_vm(vrnetlab.VM):
             if re.search(".qcow2$", e):
                 disk_image = "/" + e
         super(VJUNOSSWITCH_vm, self).__init__(username, password, disk_image=disk_image, ram=5120)
-<<<<<<< HEAD
-=======
+
         # mount config.img disk with juniper.conf file
         #self.qemu_args.extend(["-blockdev", '{"driver":"file","filename":"/var/aaries/clab/test_docker/config.qcow2","node-name":"libvirt-1-storage","cache":{"direct":false,"no-flush":false},"auto-read-only":true,"discard":"unmap"}'])
         
@@ -55,18 +48,16 @@ class VJUNOSSWITCH_vm(vrnetlab.VM):
 
         #self.qemu_args.extend(["-device", "usb-storage,bus=usb.0,port=1,drive=libvirt-1-format,id=usb-disk0,removable=off,write-cache=on"])
 
->>>>>>> more patches
         self.qemu_args.extend(["-smp", "4,sockets=1,cores=4,threads=1"])
+        
         # Additional CPU info
         self.qemu_args.extend([
             "-cpu", "IvyBridge,vme=on,ss=on,vmx=on,f16c=on,rdrand=on,hypervisor=on,arat=on,tsc-adjust=on,umip=on,arch-capabilities=on,pdpe1gb=on,skip-l1dfl-vmentry=on,pschange-mc-no=on,bmi1=off,avx2=off,bmi2=off,erms=off,invpcid=off,rdseed=off,adx=off,smap=off,xsaveopt=off,abm=off,svm=off"
             ])
-<<<<<<< HEAD
-=======
         # generate random uuid
         #self.qemu_args.extend(["-uuid", str(uuid.uuid4())]
         #self.qemu_args.extend(["-uuid", "324c9ca0-14d6-4cf3-b68d-97a0a38006bb"])
->>>>>>> more patches
+
         self.qemu_args.extend(["-overcommit", "mem-lock=off"])
         self.qemu_args.extend(["-display", "none", "-no-user-config", "-nodefaults", "-boot", "strict=on"])
         self.nic_type = "virtio-net-pci"
@@ -104,10 +95,7 @@ class VJUNOSSWITCH_vm(vrnetlab.VM):
                 # login, then execute basic init config items
                 # run main config!
                 #self.bootstrap_config()
-<<<<<<< HEAD
-=======
                 #self.startup_config()
->>>>>>> more patches
                 # close telnet connection
                 self.tn.close()
                 # startup time?
@@ -128,33 +116,6 @@ class VJUNOSSWITCH_vm(vrnetlab.VM):
 
         return
 
-<<<<<<< HEAD
-    def config(self):
-        pass
-
-    def bootstrap_config(self):
-        """ Do the actual bootstrap config using send and wait
-        """#TODO: look into passing in config to actual image instead
-        # PASS .conf directly to /config/juniper.conf?? TODO
-        self.logger.info("applying bootstrap configuration")
-        self.wait_write("cli", "#") 
-        self.wait_write("set cli screen-length 0", ">")
-        self.wait_write("set cli screen-width 511", ">")
-        self.wait_write("set cli complete-on-space off", ">")
-        self.wait_write("configure", ">")
-        self.wait_write("top delete", "#")
-        self.wait_write("yes", "Delete everything under this level? [yes,no] (no) ")
-        self.wait_write("set system login user %s class super-user authentication plain-text-password" % ( self.username ), "#")
-        self.wait_write(self.password, "New password:")
-        self.wait_write(self.password, "Retype new password:")
-        self.wait_write("set system root-authentication plain-text-password", "#")
-        self.wait_write(self.password, "New password:")
-        self.wait_write(self.password, "Retype new password:")
-        self.wait_write("delete chassis auto-image-upgrade")
-        self.wait_write("commit")
-        #self.wait_write("set system services ssh", "#")
-        #self.wait_write("set system services netconf ssh", "#")
-=======
     def startup_config(self):
         """Load additional config provided by user."""
 
@@ -196,8 +157,7 @@ class VJUNOSSWITCH_vm(vrnetlab.VM):
         self.wait_write("commit")
         self.wait_write("set system services ssh", "#")
         self.wait_write("set system services netconf ssh", "#")
->>>>>>> more patches
-        # remove DHCP6 configuration before setting DHCP4
+        # remove DHCP6 configuration preventing us to set interfaces
         self.wait_write("delete interfaces fxp0 unit 0 family inet6")
         # set interface fxp0  on dedicated management vrf, to avoid 
         # 10.0.0.0/24 to overlap with any "testing" network
