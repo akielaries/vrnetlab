@@ -53,7 +53,6 @@ if [ $? != 0 ]; then
 fi
 echo "Copying file(s) to config disk $2"
 (cd $STAGING; tar cvzf $MNTDIR/vmm-config.tgz .)
-#(cd $STAGING; cp -r * $MNTDIR/)
 cleanup
 echo "Config disk $2 created"
 exit 0
