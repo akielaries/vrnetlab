@@ -13,7 +13,3 @@ VERSION=$(shell echo $(IMAGE) | sed -e 's/vJunos-switch-//' | sed -e 's/.qcow2//
 
 -include ../makefile-sanity.include
 -include ../makefile.include
-#-include ../makefile-install.include
-
-#docker-build-image-copy:
-#	./docker/make-config.sh docker/juniper.conf docker/config.img
