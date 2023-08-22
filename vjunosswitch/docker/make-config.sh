@@ -1,13 +1,6 @@
 #!/bin/bash
-#
-# make-config.sh
-#
-# Copyright (c) 2023, Juniper Networks, Inc.
-# All rights reserved.
-#
 # Create a config metadisk from a supplied juniper.conf to attach
 # to a vJunos VM instance
-#
 usage() {
 	echo "Usage :  make-config.sh <juniper-config> <config-disk>"
 	exit 0;
